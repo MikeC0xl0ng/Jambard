@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+
+      body{
+        border: 0;
+        padding: 0;
+      }
+
+      canvas{
+        background-color: rgb(200, 200, 200);
+        border: 0;
+        padding: 0;
+        width: 100%;
+        height: auto;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <canvas id="jamboard">
+    </canvas>
+  </body>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+
+    var socket = io();
+
+    var utente = "pippo";
+    var linee = [];
+    var linea;
+    var col = "#000000";
+    var mouse_is_down = false;
+
+    var canvas = document.getElementById("jamboard");
+
+    socket.emit("imposta_utente", utente);
+
+    $("#jamboard").mousedown(function(e){
+      var posX = e.pageX - $("#jamboard").offset().left;
+      var posY = e.pageY - $("#jamboard").offset().top;
+      var punto = {x: posX, y: posY, color: col};
+      linea = [];
+      linea.push(punto);
+      linee.push(linea);
+      mouse_is_down = true;
+    });
+
+    $("#jamboard").mousemove(function(e){
+      if (mouse_is_down){
+        e_ = e;
+        console.log(e);
+        var posX = e.originalEvent.clientX;
+        var posY = e.originalEvent.clientY;
+        var punto = {x: posX, y: posY, color: col};
+        linea.push(punto);
+        drawLine(linea, utente);
+      }
+    });
+
+    $("#jamboard").mouseup(function(e){
+      mouse_is_down = false;
+      aggiornaServer(linea);
+    });
+
+    socket.on("aggiorna_linea", function(o){
+      var linea_ = o.linea;
+      var utente_ = o.utente;
+      drawLine(linea_, utente_);
+    });
+
+    function drawLine(linea_, utente_){
+      var punto = linea_[0];
+      var x = punto.x;
+      var y = punto.y;
+      var color = punto.color;
+      var ctx = canvas.getContext("2d");
+      ctx.moveTo(x, y);
+      for (let i=1; i < linea_.length; i++){
+        punto = linea_[i];
+        x = punto.x;
+        y = punto.y;
+        color = punto.color;
+        ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    var aggiornaServer = function(linea_){
+      socket.emit("aggiorna_linea", linea_);
+    }
+
+  </script>
+</html>
