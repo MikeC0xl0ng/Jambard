@@ -1,0 +1,57 @@
+<html>
+   <head>
+     <script src="lib/jquery.js"></script>
+     <style>
+        #c
+        {
+            background-color: lightGray;
+        }
+     </style>
+   </head>
+   <body>
+      <canvas id="c"></canvas>
+      <p>Coordinate del mouse: <span id="coordinate"></span>.</p>
+   </body>
+   <script>
+
+   var impostaCoordinateMouse = function(event)
+   {
+      mX = event.clientX - rectCanvas.left;
+      mY = event.clientY - rectCanvas.top;
+      $("#coordinate").html("X="+mX+" "+"Y="+mY);
+   }
+
+   c.addEventListener('mousedown', function(event)
+   {
+      impostaCoordinateMouse(event);
+      disegna = true;
+      context.beginPath();
+      context.moveTo(mX, mY);
+   });
+
+   $("#c").mousemove(function(event)
+   {
+       impostaCoordinateMouse(event);
+       if(disegna)
+       {
+          context.lineTo(mX, mY);
+          context.stroke();
+       }
+   });
+
+   c.addEventListener('mouseup', function(event)
+   {
+       impostaCoordinateMouse(event);
+       disegna = false;
+   });
+
+   $(document).ready(function()
+   {
+        disegna = false;
+        c = document.getElementById("c");
+        rectCanvas = c.getBoundingClientRect();
+        context = c.getContext("2d");
+   });
+
+   </script>
+</html>
