@@ -34,10 +34,10 @@ var client = function(socket){
     io.emit("aggiungi_punto", punto);
   });
 
-  socket.on("crea_linea", (linea) => {
+  socket.on("crea_linea", (punto) => {
     var id = id++;
-    utenti[utente].push(linea);
-    var o = {"linea": linea.linea, "color": linea.color, "utente": utente, "id": id };
+    utenti[utente].push(punto);
+    var o = {"punto": punto, "utente": utente, "id": id };
     io.emit("aggiorna_linea", o);
   });
 
