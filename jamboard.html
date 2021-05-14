@@ -30,55 +30,55 @@
     $("#jamboard").mousedown(function(e){
       var posX = e.pageX - $("#jamboard").offset().left;
       var posY = e.pageY - $("#jamboard").offset().top;
-      var punto = {x: posX, y: posY, color: col};
-      linea = [];
-      linea.push(punto);
-      linee.push(linea);
+      var punto = { x: posX, y: posY };
+      linea = { linea: [punto], color: col};    
+      socket.emit("crea_linea", linea);
       mouse_is_down = true;
     });
 
     $("#jamboard").mousemove(function(e){
       if (mouse_is_down){
-        e_ = e;
-        console.log(e);
         var posX = e.originalEvent.clientX;
         var posY = e.originalEvent.clientY;
-        var punto = {x: posX, y: posY, color: col};
-        linea.push(punto);
-        drawLine(linea, utente);
+        var punto = {x: posX, y: posY};
+        socket.emit("aggiorna_linea", punto);
       }
     });
 
     $(document).mouseup(function(e){
       mouse_is_down = false;
-      aggiornaServer(linea);
     });
 
-    socket.on("aggiorna_linea", function(o){
+    socket.on("aggiorna_linea", (o) => {      
       var linea_ = o.linea;
       var utente_ = o.utente;
       drawLine(linea_, utente_);
     });
 
+    socket.on("aggiungi_punto", (punto) => {
+      console.log(punto);
+      var ctx = canvas.getContext("2d");
+      ctx.beginPath();
+      ctx.arc(punto.x, punto.y, 5, 0, Math.PI*2, true);
+      ctx.closePath();
+      ctx.fill();
+    });
+
     function drawLine(linea_, utente_){
+      console.log(linea_[0]);
       var punto = linea_[0];
       var x = punto.x;
       var y = punto.y;
-      var color = punto.color;
+      var color = linea_.color;
       var ctx = canvas.getContext("2d");
       ctx.moveTo(x, y);
       for (let i=1; i < linea_.length; i++){
         punto = linea_[i];
         x = punto.x;
         y = punto.y;
-        color = punto.color;
         ctx.lineTo(x, y);
       }
       ctx.stroke();
-    }
-
-    var aggiornaServer = function(linea_){
-      socket.emit("aggiorna_linea", linea_);
     }
 
   </script>
