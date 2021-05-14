@@ -23,29 +23,26 @@ var client = function(socket){
 
   socket.on("imposta_utente", (nome) => {
     utente = nome;
-    utenti[utente] = {"nome": utente};
-    console.log("Utente " + utenti[utente].nome + " è entrato");
-    console.log(utenti);
+    utenti[utente] = [];
+    console.log("Utente " + utente + " è entrato");    
   });
 
   socket.on("aggiorna_linea", function(punto){
-    utenti[utente].linea.linea.push(punto);
-    var o = {"linea": utenti[utente].linea.linea, "utente": utente};
-    io.emit("aggiorna_linea", o);
+    var id = utenti[utente].length-1;
+    punto.id = id;
+    //var o = {"linea": utenti[utente][id].linea, "utente": utente};
+    io.emit("aggiungi_punto", punto);
   });
 
   socket.on("crea_linea", (linea) => {
-    linea.id = id++;
-    console.log(linea);
-    utenti[utente].linea = linea;
-    var o = {"linea": linea.linea, "color": linea.color, "utente": utente};
+    var id = id++;
+    utenti[utente].push(linea);
+    var o = {"linea": linea.linea, "color": linea.color, "utente": utente, "id": id };
     io.emit("aggiorna_linea", o);
   });
 
 
-  socket.on("cambia_colore", function(colore){
-
-  });
+  //socket.on("cambia_colore", function(colore){});
 
   socket.on("disconnect", function(){
     console.log("qualcuno si è disconnesso");

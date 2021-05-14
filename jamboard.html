@@ -48,16 +48,27 @@
 
     $(document).mouseup(function(e){
       mouse_is_down = false;
-      socket.emit("aggiorna_linea", linea);
+      //socket.emit("aggiorna_linea", linea);
     });
 
-    socket.on("aggiorna_linea", function(o){
+    socket.on("aggiorna_linea", (o) => {      
       var linea_ = o.linea;
       var utente_ = o.utente;
       drawLine(linea_, utente_);
     });
 
+    socket.on("aggiungi_punto", (punto) => {
+      console.log(punto);
+      var ctx = canvas.getContext("2d");
+      ctx.beginPath();
+      ctx.arc(punto.x, punto.y, 5, 0, Math.PI*2, true);
+      ctx.closePath();
+      ctx.fill();
+      
+    });
+
     function drawLine(linea_, utente_){
+      console.log(linea_[0]);
       var punto = linea_[0];
       var x = punto.x;
       var y = punto.y;
@@ -68,7 +79,6 @@
         punto = linea_[i];
         x = punto.x;
         y = punto.y;
-        color = linea_.color;
         ctx.lineTo(x, y);
       }
       ctx.stroke();
