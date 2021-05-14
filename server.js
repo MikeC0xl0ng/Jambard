@@ -34,6 +34,7 @@ var client = function(socket){
     io.emit("aggiorna_linea", o);
   });
 
+
   socket.on("cambia_colore", function(colore){
 
   });

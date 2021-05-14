@@ -32,8 +32,9 @@
       var posX = e.pageX - $("#jamboard").offset().left;
       var posY = e.pageY - $("#jamboard").offset().top;
       var punto = {x: posX, y: posY, color: col};
-      linea = [];
-      linea.push(punto);
+      linea = { status: "new_", linea: [], color: col};
+      linea.linea.push(punto);
+      console.log(linea);
       //linee.push(linea);
       //aggiungilinea 
       aggiornaServer(linea);
@@ -43,7 +44,6 @@
     $("#jamboard").mousemove(function(e){
       if (mouse_is_down){
         e_ = e;
-        console.log(e);
         var posX = e.originalEvent.clientX;
         var posY = e.originalEvent.clientY;
         var punto = {x: posX, y: posY, color: col};
@@ -82,19 +82,15 @@
     }
 
     var aggiornaServer = function(linea_){
-      socket.emit("aggiorna_linea", linea_);
+      socket.emit("aggiorna_linea", linea_.linea);
     }
 
-    var aggiungiline = function(){
+    // var aggiungiline = function(){
 
-      // l'ultima del vettore del server
-      //oppure
-      //tramite id
-      
-    }
-
-
-    
+    //   // l'ultima del vettore del server
+    //   //oppure
+    //   //tramite id
+    // }
 
   </script>
 </html>
