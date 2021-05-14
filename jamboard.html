@@ -34,7 +34,8 @@
       var punto = {x: posX, y: posY, color: col};
       linea = [];
       linea.push(punto);
-      linee.push(linea);
+      //linee.push(linea);
+      aggiornaServer(linea);
       mouse_is_down = true;
     });
 
@@ -46,7 +47,8 @@
         var posY = e.originalEvent.clientY;
         var punto = {x: posX, y: posY, color: col};
         linea.push(punto);
-        drawLine(linea, utente);
+        aggiornaServer(linea);
+        //drawLine(linea, utente);
       }
     });
 
@@ -81,6 +83,8 @@
     var aggiornaServer = function(linea_){
       socket.emit("aggiorna_linea", linea_);
     }
+
+    
 
   </script>
 </html>

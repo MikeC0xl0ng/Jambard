@@ -23,6 +23,7 @@ var client = function(socket){
   socket.on("imposta_utente", function(nome){
     utente = nome;
     utenti[utente] = [];
+    console.log("Utente " + nome + " è entrato");
   });
 
   socket.on("aggiorna_linea", function(linea){
@@ -36,11 +37,11 @@ var client = function(socket){
   });
 
   socket.on("disconnect", function(){
-
+    console.log("qualcuno si è disconnesso");
   });
 
 }
 
 server.listen(3000, function(){
-
+  console.log("Il server è attivo sulla porta 3000");
 });
