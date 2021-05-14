@@ -19,18 +19,26 @@ io.on("connection", function(socket){
 var client = function(socket){
 
   var utente;
+  var id = 0;
 
-  socket.on("imposta_utente", function(nome){
+  socket.on("imposta_utente", (nome) => {
     utente = nome;
-    utenti[utente] = [];
-    console.log("Utente " + nome + " è entrato");
+    utenti[utente] = {"nome": utente};
+    console.log("Utente " + utenti[utente].nome + " è entrato");
+    console.log(utenti);
   });
 
-  socket.on("aggiorna_linea", function(linea){
-    // sostituisci la linea (se non è una nuova)
-    // oggetto composto da line e il sui id
-    utenti[utente].push(linea);
-    var o = {"linea": linea, "utente": utente};
+  socket.on("aggiorna_linea", function(punto){
+    utenti[utente].linea.linea.push(punto);
+    var o = {"linea": utenti[utente].linea.linea, "utente": utente};
+    io.emit("aggiorna_linea", o);
+  });
+
+  socket.on("crea_linea", (linea) => {
+    linea.id = id++;
+    console.log(linea);
+    utenti[utente].linea = linea;
+    var o = {"linea": linea.linea, "color": linea.color, "utente": utente};
     io.emit("aggiorna_linea", o);
   });
 
