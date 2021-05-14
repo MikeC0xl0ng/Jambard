@@ -35,6 +35,7 @@
       linea = [];
       linea.push(punto);
       //linee.push(linea);
+      //aggiungilinea 
       aggiornaServer(linea);
       mouse_is_down = true;
     });
@@ -83,6 +84,15 @@
     var aggiornaServer = function(linea_){
       socket.emit("aggiorna_linea", linea_);
     }
+
+    var aggiungiline = function(){
+
+      // l'ultima del vettore del server
+      //oppure
+      //tramite id
+      
+    }
+
 
     
 

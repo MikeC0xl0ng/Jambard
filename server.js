@@ -27,6 +27,8 @@ var client = function(socket){
   });
 
   socket.on("aggiorna_linea", function(linea){
+    // sostituisci la linea (se non è una nuova)
+    // oggetto composto da line e il sui id
     utenti[utente].push(linea);
     var o = {"linea": linea, "utente": utente};
     io.emit("aggiorna_linea", o);
