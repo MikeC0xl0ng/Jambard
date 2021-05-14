@@ -48,7 +48,6 @@
 
     $(document).mouseup(function(e){
       mouse_is_down = false;
-      //socket.emit("aggiorna_linea", linea);
     });
 
     socket.on("aggiorna_linea", (o) => {      
@@ -64,7 +63,6 @@
       ctx.arc(punto.x, punto.y, 5, 0, Math.PI*2, true);
       ctx.closePath();
       ctx.fill();
-      
     });
 
     function drawLine(linea_, utente_){
