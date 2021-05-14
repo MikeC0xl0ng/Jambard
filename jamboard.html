@@ -22,6 +22,9 @@
     var mouse_is_down = false;
 
     var canvas = document.getElementById("jamboard");
+    
+    canvas.width = window.innerWidth *0.65;
+    canvas.height = 300;
 
     socket.emit("imposta_utente", utente);
 
