@@ -49,30 +49,22 @@
     });
 
     socket.on("aggiungi_punto", (punto) => {
-      console.log(punto);
-      var ctx = canvas.getContext("2d");
-      ctx.beginPath();
-      ctx.arc(punto.x, punto.y, 5, 0, Math.PI*2, true);
-      ctx.closePath();
-      ctx.fill();
-    });
+      // console.log(punto);
+      // var ctx = canvas.getContext("2d");
+      // ctx.beginPath();
+      // ctx.arc(punto.x, punto.y, 5, 0, Math.PI*2, true);
+      // ctx.closePath();
+      // ctx.fill();
 
-    function drawLine(linea_, utente_){
-      console.log(linea_[0]);
-      var punto = linea_[0];
-      var x = punto.x;
-      var y = punto.y;
-      var color = linea_.color;
-      var ctx = canvas.getContext("2d");
-      ctx.moveTo(x, y);
-      for (let i=1; i < linea_.length; i++){
-        punto = linea_[i];
-        x = punto.x;
-        y = punto.y;
-        ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-    }
+      var context = canvas.getContext("2d");
+      context.beginPath();
+      context.moveTo(punto.ultimo_punto.x, punto.ultimo_punto.y);
+      context.lineTo(punto.punto.x, punto.punto.y);
+      context.strokeStyle = 'green';
+      context.lineWidth = 5;
+      context.lineCap = 'round';
+      context.stroke();
+    });
 
   </script>
 </html>

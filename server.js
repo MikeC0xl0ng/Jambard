@@ -13,43 +13,42 @@ app.get("/", function(req, res){
 });
 
 io.on("connection", function(socket){
-  client(socket);
-});
-
-var client = function(socket){
 
   var utente;
   var id = 0;
 
   socket.on("imposta_utente", (nome) => {
     utente = nome;
-    utenti[utente] = [];
+    utenti[utente] = {};
     console.log("Utente " + utente + " è entrato");    
   });
 
   socket.on("aggiorna_linea", function(punto){
-    var id = utenti[utente].length-1;
-    punto.id = id;
-    //var o = {"linea": utenti[utente][id].linea, "utente": utente};
-    io.emit("aggiungi_punto", punto);
+    var id = Object.keys(utenti[utente]).length;
+    console.log(id);
+    console.log(utenti[utente][id-1].punti);
+    // utenti[utente][id].punti.push({ "x": punto.x, "y": punto.y });
+    // console.log("Utente " + utente + " ha le seguente linee:");
+    // console.log(utenti[utente]);
+    // var o = {"punto": punto, "ultimo_punto":  utenti[utente][id-1].punto, "utente": utente };
+    // io.emit("aggiungi_punto", o);
   });
 
   socket.on("crea_linea", (punto) => {
-    var id = id++;
-    utenti[utente].push(punto);
-    var o = {"punto": punto, "utente": utente, "id": id };
-    io.emit("aggiorna_linea", o);
+    var id = Object.keys(utenti[utente]).length;
+    console.log(id);
+    var linea = { "id": id, "punti": [{"x": punto.x, "y": punto.y }], "color": punto.col };
+    utenti[utente][id] = linea;
+    var o = {"punto": punto, "ultimo_punto": { "x": punto.x, "y": punto.y }, "utente": utente };
+    io.emit("aggiungi_punto", o);
   });
-
 
   //socket.on("cambia_colore", function(colore){});
 
   socket.on("disconnect", function(){
     console.log("qualcuno si è disconnesso");
   });
-
-}
-
+});
 server.listen(3000, function(){
   console.log("Il server è attivo sulla porta 3000");
 });
