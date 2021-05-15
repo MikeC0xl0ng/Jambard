@@ -62,7 +62,8 @@ io.on("connection", function(socket){
 
   function aggiungiPuntoAllaLinea(punto, linea){
     linea.push(punto);
-    io.emit("aggiungi_punto", linea.punto);
+    io.emit("aggiungi_punto", linea[linea.length-1]);
+    console.log(linea[linea.length-1]);
   }
 
   // clickdown - evento
