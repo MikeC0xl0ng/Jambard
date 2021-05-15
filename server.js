@@ -47,11 +47,6 @@ io.on("connection", function(socket){
     io.emit("aggiungi_punto", punti);
   }
 
-<<<<<<< HEAD
-  //socket.on("cambia_colore", function(colore){});
-
-=======
->>>>>>> future_feature
   socket.on("disconnect", function(){
     console.log("qualcuno si è disconnesso");
   });
