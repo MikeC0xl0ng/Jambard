@@ -55,15 +55,19 @@ io.on("connection", function(socket){
     aggiungiPuntoAllaLinea(punto, socket.currentLine.linea);
   });
 
-  socket.on("linea_terminata", (punto) => {
-    aggiungiPuntoAllaLinea(punto, socket.currentLine.linea);
+  socket.on("linea_terminata", () => {
     socket.currentLine = undefined;
   });
 
   function aggiungiPuntoAllaLinea(punto, linea){
     linea.push(punto);
-    io.emit("aggiungi_punto", linea[linea.length-1]);
-    console.log(linea[linea.length-1]);
+    if(linea.length > 2){
+      var punti = { "punto": linea[linea.length-1], "punto_vecchio": linea[linea.length-2] };
+    }
+    else{
+      var punti = { "punto": linea[linea.length-1], "punto_vecchio": linea[linea.length-1]+2 };
+    }
+    io.emit("aggiungi_punto", punti);
   }
 
   // clickdown - evento
