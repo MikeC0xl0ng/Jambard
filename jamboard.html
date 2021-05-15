@@ -28,34 +28,29 @@
     socket.emit("imposta_utente", utente);
 
     $("#jamboard").mousedown(function(e){
-      var posX = e.pageX - $("#jamboard").offset().left;
-      var posY = e.pageY - $("#jamboard").offset().top;
-      var punto = { x: posX, y: posY, color: col };  
-      socket.emit("crea_linea", punto);
+      mandaPunto(e);
       mouse_is_down = true;
     });
 
     $("#jamboard").mousemove(function(e){
       if (mouse_is_down){
-        var posX = e.originalEvent.clientX;
-        var posY = e.originalEvent.clientY;
-        var punto = {x: posX, y: posY};
-        socket.emit("aggiorna_linea", punto);
+       mandaPunto(e);
       }
     });
 
     $(document).mouseup(function(e){
       mouse_is_down = false;
+      socket.emit("linea_terminata", { "x": posX, "y": posY, "color": col });
   });
 
+    function mandaPunto(e){
+      var posX = e.pageX - $("#jamboard").offset().left;
+      var posY = e.pageY - $("#jamboard").offset().top;
+      var punto = { "x": posX, "y": posY, "color": col };  
+      socket.emit("aggiungi_punto", punto);
+    }
+
     socket.on("aggiungi_punto", (punto) => {
-      // console.log(punto);
-      // var ctx = canvas.getContext("2d");
-      // ctx.beginPath();
-      // ctx.arc(punto.x, punto.y, 5, 0, Math.PI*2, true);
-      // ctx.closePath();
-      // ctx.fill();
-      console.log(punto);
       var context = canvas.getContext("2d");
       context.beginPath();
       context.moveTo(punto.ultimo_punto.x, punto.ultimo_punto.y);
