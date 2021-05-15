@@ -38,8 +38,10 @@ io.on("connection", function(socket){
     console.log("Linea creata con id: " + id);
     var linea = { "punti": [{"x": punto.x, "y": punto.y }], "color": punto.col };
     utenti[utente][id] = linea;
+    // guarda è stata aggiunta una linea
     var o = {"punto": punto, "ultimo_punto": { "x": punto.x, "y": punto.y }, "utente": utente };
     io.emit("aggiungi_punto", o);
+    io.emit("crea_nuova_linea", linea);
   });
 
   //socket.on("cambia_colore", function(colore){});
