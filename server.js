@@ -28,6 +28,7 @@ io.on("connection", function(socket){
     utenti[utente][id].punti.push({ "x": punto.x, "y": punto.y });
     console.log("Utente " + utente + " ha le seguente linee:");
     console.log(utenti[utente]);
+    console.log(utenti[utente][id].punto);
     var o = { "punto": punto, "ultimo_punto": utenti[utente][id].punto, "utente": utente };
     io.emit("aggiungi_punto", o);
   });
