@@ -36,7 +36,7 @@
       mouse_is_down = true;
     });
 
-    $("#jamboard").mousemove(function(e){
+    canvas.addEventListener("mousemove", function(e){
       if (mouse_is_down){
         var posX = e.originalEvent.clientX;
         var posY = e.originalEvent.clientY;
