@@ -8,9 +8,8 @@
   </head>
   <body>
     <canvas id="jamboard"></canvas>
-    <input type="color" id="chooseColor">
     <br><br>
-    <input type="submit" id="inputColor">
+    <input type="color" id="chooseColor" value="#000000">
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -29,9 +28,11 @@
 
     socket.emit("imposta_utente", utente);
 
-    $('#inputColor').click(function(e){
-      col = $('#chooseColor').val();
-    });
+    $('#chooseColor').on('input',
+    function() {
+        col = $(this).val();
+    }
+  );
 
     $("#jamboard").mousedown(function(e){
       mandaPunto(e);
