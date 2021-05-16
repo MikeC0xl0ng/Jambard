@@ -8,9 +8,9 @@
   </head>
   <body>
     <canvas id="jamboard"></canvas>
-    <input type="color" id="colorInput">
+    <input type="color" id="chooseColor">
     <br><br>
-    <input type="submitColor">
+    <input type="submit" id="inputColor">
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -28,6 +28,10 @@
     canvas.height = 300;
 
     socket.emit("imposta_utente", utente);
+
+    $('#inputColor').click(function(e){
+      col = $('#chooseColor').val();
+    });
 
     $("#jamboard").mousedown(function(e){
       mandaPunto(e);
@@ -52,13 +56,12 @@
       socket.emit("aggiungi_punto", punto);
     }
 
-    socket.on("aggiungi_punto", (punti) => {
-      // console.log(punti);
+    socket.on("aggiungi_punto", (punti) => {      
       var canvas = document.getElementById("jamboard");
       var ctx = canvas.getContext("2d");
       ctx.lineWidth = 5;
       ctx.lineCap = 'round';
-      // ctx.strokeStyle = 'punti.color';
+      ctx.strokeStyle = punti.punto.color;
       ctx.beginPath();
       ctx.moveTo(punti.punto_vecchio.x, punti.punto_vecchio.y);
       ctx.lineTo(punti.punto.x, punti.punto.y);
