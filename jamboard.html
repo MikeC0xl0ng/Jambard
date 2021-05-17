@@ -21,7 +21,12 @@
               <div class="col d-flex justify-content-center">
                 <input type="color" id="chooseColor" value="#000000">
               </div>
-              <div class="col"></div><div class="col"></div><div class="col"></div><div class="col"></div><div class="col"></div>
+              <div class="col">
+                <button id="draw">Draw</button>
+              </div>
+              <div class="col">
+                <button id="cancel">Clean</button>
+              </div><div class="col"></div><div class="col"></div><div class="col"></div>
             </div>
           </div>
         </div>
@@ -37,6 +42,7 @@
     var linea;
     var col = "#000000";
     var mouse_is_down = false;
+    var draw = true;
 
     var canvas = document.getElementById("jamboard");
     
@@ -45,11 +51,20 @@
 
     socket.emit("imposta_utente", utente);
 
-    $('#chooseColor').on('input',
-    function() {
+    $('#draw').click(function(){
+      draw = true;
+      alert("Draw: " + draw);
+    });
+
+    $('#cancel').click(function(){
+      draw = false;
+      alert("Draw: " + draw);
+    });
+
+    $('#chooseColor').on('input', function() {
         col = $(this).val();
-    }
-  );
+      }
+    );
 
     $("#jamboard").mousedown(function(e){
       mandaPunto(e);
@@ -65,7 +80,7 @@
     $(document).mouseup(function(e){
       mouse_is_down = false;
       socket.emit("linea_terminata");
-  });
+    });
 
     function mandaPunto(e){
       var posX = e.pageX - $("#jamboard").offset().left;
