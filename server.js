@@ -17,19 +17,31 @@ io.on("connection", function(socket){
 
   var utente;
   socket.currentLine = undefined;
+  var draw = true;
 
   socket.on("imposta_utente", (nome) => {
     utente = nome;
-    utenti[utente] = {};
+    utenti[utente] = { "draw": draw };
     console.log("Utente " + utente + " è entrato");    
+    console.log("Il suo draw status è: " + utenti[utente].draw);
+  });
+
+  socket.on("draw_status", (draw_status) => {
+    draw = draw_status;
+    utenti[utente].draw = draw;
+    console.log("Il draw_status dell'utente è stato impostato su " + draw);
   });
 
   socket.on("aggiungi_punto", (punto) => {
-    if(socket.currentLine == undefined){
-      socket.currentLine = { "id": nextID, "linea": [], "colore": punto.color };
-      nextID = nextID + 1;
+    if(draw){
+      if(socket.currentLine == undefined){
+
+        console.log(draw);
+        socket.currentLine = { "id": nextID, "linea": [], "colore": punto.color };
+        nextID = nextID + 1;
+      }
+      aggiungiPuntoAllaLinea(punto, socket.currentLine.linea);
     }
-    aggiungiPuntoAllaLinea(punto, socket.currentLine.linea);
   });
 
   socket.on("linea_terminata", () => {

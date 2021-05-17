@@ -25,7 +25,7 @@
                 <button id="draw">Draw</button>
               </div>
               <div class="col">
-                <button id="cancel">Clean</button>
+                <button id="cancel">Don't Draw</button>
               </div><div class="col"></div><div class="col"></div><div class="col"></div>
             </div>
           </div>
@@ -53,13 +53,19 @@
 
     $('#draw').click(function(){
       draw = true;
-      alert("Draw: " + draw);
+      //alert("Draw: " + draw);
+      sendDrawStatus();
     });
 
     $('#cancel').click(function(){
       draw = false;
-      alert("Draw: " + draw);
+      //alert("Draw: " + draw);
+      sendDrawStatus();
     });
+
+    function sendDrawStatus(){
+      socket.emit("draw_status", draw);
+    };
 
     $('#chooseColor').on('input', function() {
         col = $(this).val();
