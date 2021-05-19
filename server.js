@@ -33,7 +33,6 @@ io.on("connection", function(socket){
   });
 
   socket.on("aggiungi_punto", (punto) => {
-    if(draw){
       if(socket.currentLine == undefined){
 
         console.log(draw);
@@ -41,7 +40,6 @@ io.on("connection", function(socket){
         nextID = nextID + 1;
       }
       aggiungiPuntoAllaLinea(punto, socket.currentLine.linea);
-    }
   });
 
   socket.on("linea_terminata", () => {
@@ -51,10 +49,10 @@ io.on("connection", function(socket){
   function aggiungiPuntoAllaLinea(punto, linea){
     linea.push(punto);
     if(linea.length > 2){
-      var punti = { "punto": linea[linea.length-1], "punto_vecchio": linea[linea.length-2] };
+      var punti = { "punto": linea[linea.length-1], "punto_vecchio": linea[linea.length-2], "draw_status": draw };
     }
     else{
-      var punti = { "punto": linea[linea.length-1], "punto_vecchio": linea[linea.length-1]+2 };
+      var punti = { "punto": linea[linea.length-1], "punto_vecchio": linea[linea.length-1]+2, "draw_status": draw };
     }
     io.emit("aggiungi_punto", punti);
   }

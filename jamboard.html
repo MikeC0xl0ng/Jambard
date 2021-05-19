@@ -25,7 +25,7 @@
                 <button id="draw">Draw</button>
               </div>
               <div class="col">
-                <button id="cancel">Don't Draw</button>
+                <button id="cancel">Erase</button>
               </div><div class="col"></div><div class="col"></div><div class="col"></div>
             </div>
           </div>
@@ -78,6 +78,7 @@
     });
 
     canvas.addEventListener("mousemove", function(e){
+      // change cursor
       if (mouse_is_down){
        mandaPunto(e);
       }
@@ -100,7 +101,13 @@
       var ctx = canvas.getContext("2d");
       ctx.lineWidth = 5;
       ctx.lineCap = 'round';
-      ctx.strokeStyle = punti.punto.color;
+      if(punti.draw_status){
+        ctx.strokeStyle = punti.punto.color;
+      }
+      else{
+        var backgroundColorJamboard = $('#jamboard').css(["background-color"]);
+        ctx.strokeStyle = backgroundColorJamboard["background-color"];
+      }
       ctx.beginPath();
       ctx.moveTo(punti.punto_vecchio.x, punti.punto_vecchio.y);
       ctx.lineTo(punti.punto.x, punti.punto.y);
