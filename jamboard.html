@@ -87,13 +87,14 @@
 
     $('#draw').click(function(){
       draw = true;
+      $('#jamboard').css('cursor', 'auto');
       //alert("Draw: " + draw);
       sendDrawStatus();
     });
 
     $('#erase').click(function(){
       draw = false;
-      $('#jamboard').css('cursor', 'url("/img/circle-32.png")4 12, pointer');
+      $('#jamboard').css('cursor', 'url("/img/cursor.png"), auto');
       //alert("Draw: " + draw);
       sendDrawStatus();
     });
@@ -134,14 +135,15 @@
     socket.on("aggiungi_punto", (punti) => {      
       var canvas = document.getElementById("jamboard");
       var ctx = canvas.getContext("2d");
-      ctx.lineWidth = punti.punto.line_width;
       ctx.lineCap = 'round';
       if(punti.draw_status){
+        ctx.lineWidth = punti.punto.line_width;
         ctx.strokeStyle = punti.punto.color;
       }
       else{
         var backgroundColorJamboard = $('#jamboard').css(["background-color"]);
         ctx.strokeStyle = backgroundColorJamboard["background-color"];
+        ctx.lineWidth = 25;
       }
       ctx.beginPath();
       ctx.moveTo(punti.punto_vecchio.x, punti.punto_vecchio.y);
