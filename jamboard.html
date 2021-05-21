@@ -11,9 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <style>
       canvas{ background-color: rgb(200, 200, 200); }
-      svg:hover{
-        cursor: pointer;
-      }
+      svg:hover{ cursor: pointer; }
     </style>
   </head>
   <body>
@@ -95,7 +93,7 @@
 
     $('#erase').click(function(){
       draw = false;
-      //$('#jamboard').css('cursor', 'url(https://w7.pngwing.com/pngs/848/336/png-transparent-circle-area-point-angle-white-gray-circle-angle-other-white.png), auto');
+      $('#jamboard').css('cursor', 'url("/img/circle-32.png")4 12, pointer');
       //alert("Draw: " + draw);
       sendDrawStatus();
     });

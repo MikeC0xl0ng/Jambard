@@ -9,6 +9,18 @@ const fs = require("fs");
 var utenti = {};
 var nextID = 0; 
 
+let options = {
+  dotfiles: "ignore",
+  etag: true,
+  extensions: ["htm", "html"],
+  index: false,
+  setHeaders: function(res, path, stat){
+    res.set("x-timestap", Date.now());
+  }
+};
+
+app.use(express.static("public", options));     // serving the public folder
+
 app.get("/", function(req, res){
   res.sendFile(__dirname + "\\jamboard.html");
 });
