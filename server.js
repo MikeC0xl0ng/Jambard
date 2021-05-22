@@ -35,13 +35,11 @@ io.on("connection", function(socket){
     utente = nome;
     utenti[utente] = { "draw": draw };
     console.log("Utente " + utente + " è entrato");    
-    console.log("Il suo draw status è: " + utenti[utente].draw);
   });
 
   socket.on("draw_status", (draw_status) => {
     draw = draw_status;
-    utenti[utente].draw = draw;
-    console.log("Il draw_status dell'utente è stato impostato su " + draw);
+    utenti[utente].draw = draw;    
   });
 
   socket.on("aggiungi_punto", (punto) => {
@@ -54,6 +52,10 @@ io.on("connection", function(socket){
 
   socket.on("linea_terminata", () => {
     socket.currentLine = undefined;
+  });
+
+  socket.on("clear", () => {
+    io.emit("clear");
   });
 
   function aggiungiPuntoAllaLinea(punto, linea){

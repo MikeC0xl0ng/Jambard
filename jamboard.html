@@ -53,7 +53,10 @@
                     </ul>
                 </div>
               </div>
-              <div class="col"></div><div class="col"></div>
+              <div class="col">
+                <button id="clear">Clen the jamboard</button>
+              </div>
+              <div class="col"></div>
             </div>
           </div>
         </div>
@@ -77,7 +80,17 @@
     canvas.width = window.innerWidth *0.65;
     canvas.height = 300;
 
+    var ctx = canvas.getContext("2d");
+
     socket.emit("imposta_utente", utente);
+
+    $('#clear').click(function(){
+      socket.emit("clear");
+    });
+
+    socket.on("clear", () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
 
     $(".dropdown-menu li a").click(function(){
       var newLineWidth = $(this).text();
@@ -88,14 +101,12 @@
     $('#draw').click(function(){
       draw = true;
       $('#jamboard').css('cursor', 'auto');
-      //alert("Draw: " + draw);
       sendDrawStatus();
     });
 
     $('#erase').click(function(){
       draw = false;
       $('#jamboard').css('cursor', 'url("/img/cursor.png"), auto');
-      //alert("Draw: " + draw);
       sendDrawStatus();
     });
 
@@ -113,8 +124,7 @@
       mouse_is_down = true;
     });
 
-    canvas.addEventListener("mousemove", function(e){
-      // change cursor
+    $('#jamboard').mousemove(function(e){
       if (mouse_is_down){
        mandaPunto(e);
       }
@@ -133,8 +143,6 @@
     }
 
     socket.on("aggiungi_punto", (punti) => {      
-      var canvas = document.getElementById("jamboard");
-      var ctx = canvas.getContext("2d");
       ctx.lineCap = 'round';
       if(punti.draw_status){
         ctx.lineWidth = punti.punto.line_width;
