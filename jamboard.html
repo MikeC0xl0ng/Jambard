@@ -65,8 +65,8 @@
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io();
 
+    var socket = io();
     var utente = "pippo";
     var linee = [];
     var linea;
@@ -74,74 +74,52 @@
     var mouse_is_down = false;
     var draw = true;
     var lineWidth = 5;
-
     var canvas = document.getElementById("jamboard");
-    
+    var ctx = canvas.getContext("2d");
+
     canvas.width = window.innerWidth *0.65;
     canvas.height = 300;
-
-    var ctx = canvas.getContext("2d");
 
     socket.emit("imposta_utente", utente);
 
     $('#clear').click(function(){
       socket.emit("clear");
     });
-
     socket.on("clear", () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
-
     $(".dropdown-menu li a").click(function(){
       var newLineWidth = $(this).text();
       $(this).parents('.dropdown').find('.dropdown-toggle').html("Line Width: " + newLineWidth);
       lineWidth = newLineWidth;
     });
-
     $('#draw').click(function(){
       draw = true;
       $('#jamboard').css('cursor', 'auto');
       sendDrawStatus();
     });
-
     $('#erase').click(function(){
       draw = false;
-      $('#jamboard').css('cursor', 'url("/img/cursor.png"), auto');
+      $('#jamboard').css('cursor', 'url("/img/cursorcur.cur"), auto');
       sendDrawStatus();
     });
-
-    function sendDrawStatus(){
-      socket.emit("draw_status", draw);
-    };
-
     $('#chooseColor').on('input', function() {
         col = $(this).val();
       }
     );
-
     $("#jamboard").mousedown(function(e){
       mandaPunto(e);
       mouse_is_down = true;
     });
-
     $('#jamboard').mousemove(function(e){
       if (mouse_is_down){
        mandaPunto(e);
       }
     });
-
     $(document).mouseup(function(e){
       mouse_is_down = false;
       socket.emit("linea_terminata");
     });
-
-    function mandaPunto(e){
-      var posX = e.pageX - $("#jamboard").offset().left;
-      var posY = e.pageY - $("#jamboard").offset().top;
-      var punto = { "x": posX, "y": posY, "color": col, "line_width": lineWidth };  
-      socket.emit("aggiungi_punto", punto);
-    }
-
     socket.on("aggiungi_punto", (punti) => {      
       ctx.lineCap = 'round';
       if(punti.draw_status){
@@ -151,13 +129,22 @@
       else{
         var backgroundColorJamboard = $('#jamboard').css(["background-color"]);
         ctx.strokeStyle = backgroundColorJamboard["background-color"];
-        ctx.lineWidth = 25;
+        ctx.lineWidth = 32;
       }
       ctx.beginPath();
       ctx.moveTo(punti.punto_vecchio.x, punti.punto_vecchio.y);
       ctx.lineTo(punti.punto.x, punti.punto.y);
       ctx.stroke();
     });
+    var mandaPunto = function(e){
+      var posX = e.pageX - $("#jamboard").offset().left;
+      var posY = e.pageY - $("#jamboard").offset().top;
+      var punto = { "x": posX, "y": posY, "color": col, "line_width": lineWidth };  
+      socket.emit("aggiungi_punto", punto);
+    }
+    var sendDrawStatus = function(){
+      socket.emit("draw_status", draw);
+    };
 
   </script>
 </html>
