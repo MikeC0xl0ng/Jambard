@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const fs = require("fs");
+var port = process.env.PORT || 8080;
 
 var utenti = {};
 var nextID = 0; 
@@ -22,7 +23,7 @@ let options = {
 app.use(express.static("public", options));     // serving the public folder
 
 app.get("/", function(req, res){
-  res.sendFile(__dirname + "\\jamboard.html");
+  res.sendFile(__dirname + "//jamboard.html");
 });
 
 io.on("connection", function(socket){
@@ -73,6 +74,6 @@ io.on("connection", function(socket){
     console.log("qualcuno si è disconnesso");
   });
 });
-server.listen(3000, function(){
+server.listen(port, function(){
   console.log("Il server è attivo sulla porta 3000");
 });
