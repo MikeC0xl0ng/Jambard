@@ -23,7 +23,7 @@ let options = {
 app.use(express.static("public", options));     // serving the public folder
 
 app.get("/", function(req, res){
-  res.sendFile(__dirname + "\\jamboard.html");
+  res.sendFile(__dirname + "//jamboard.html");
 });
 
 io.on("connection", function(socket){
