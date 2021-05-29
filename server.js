@@ -56,7 +56,6 @@ io.on("connection", function(socket){
 
   socket.on("clear", () => {
     io.emit("clear");
-    socket.currentLine.linea = [];
   });
 
   function aggiungiPuntoAllaLinea(punto, linea){
