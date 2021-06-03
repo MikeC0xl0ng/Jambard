@@ -3,10 +3,14 @@
  Digital interactive whiteboard to use with your friend/colleagues. It permits to draw whatever you want and others will be able to see it, erase it and draw over.
  
  ## Getting started 
- 
+
+You can test this app [here](https://lavagna-condivisa.herokuapp.com/)
+
  ### Dependencies
  - node v14.16.0 or higher
  - npm v6.14.11 or higher
+ - express@4
+ - socket.io 
  
  ### Installing and running the program
  1. clone the repo
